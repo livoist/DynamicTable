@@ -1,0 +1,241 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DynamicTable</title>
+</head>
+<body></body>
+</html>
+
+<script>
+// Dynamic Programing Version
+let table1 = []
+let table2 = []
+let table3 = []
+let result = ""
+let xString = "ATVBBBBCCC"
+let yString = "TCBCCD"
+
+// get DynamicPrograming Table
+const dynamicLCS = (str1, str2) => {
+  let m = str1.length
+  let n = str2.length
+
+  for (let i = 0; i <= m; i++) {
+    table1.push([])
+    table1[i][0] = 0
+    for (let k = 1; k <= n; k++) {
+      table1[i].push(null)
+    }
+  }
+  
+  for (let j = 0; j <= n; j++) {
+    table1[0][j] = 0
+  }
+  
+  // table2
+  for (let i = 0; i <= m; i++) {
+    table2.push([])
+    for (let k = 0; k <= n; k++) {
+      table2[i].push('')
+    }
+  }
+
+  // table3
+  for (let i = 0; i <= m; i++) {
+    table3.push([])
+    for (let k = 0; k <= n; k++) {
+      table3[i].push('')
+    }
+  }
+  
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      // 如果兩者相等
+      if (str1[i - 1] === str2[j - 1]) {
+        table1[i][j] = 1 + table1[i - 1][j - 1]
+        table2[i][j] = "↖"
+      // 上方大於左邊
+      } else if (table1[i - 1][j] >= table1[i][j - 1]) {
+        table1[i][j] = table1[i - 1][j]
+        table2[i][j] = "↑"
+      // 左邊大於上方
+      } else {
+        table1[i][j] = table1[i][j - 1]
+        table2[i][j] = "←"
+      }
+    }
+  }
+}
+
+// print result and get result path
+const dynamicPrintLCS = (i, j) => {
+  if (i === 0 || j === 0) return
+  if (table2[i][j] === "↖") {
+    dynamicPrintLCS(i - 1, j - 1)
+    result += xString[i - 1]
+    table3[i][j] = "↖"
+  } else if (table2[i][j] === "↑") {
+    dynamicPrintLCS(i - 1, j)
+  } else {
+    dynamicPrintLCS(i, j - 1)
+  }
+}
+
+// get final result array
+const getDynamicTable = (t1, t2) => {
+  for (let i = 0; i < t2.length; i++) {
+    for (let j = 0; j < t2[i].length; j++) {
+      t2[i][j] === '' ?
+        t1[i][j] += `${t2[i][j]}` :
+        t1[i][j] += ` ${t2[i][j]}`
+    }
+  }
+
+  handleTableTitle(table1)
+  handleTableTitle(table2)
+  handleTableTitle(table3)
+}
+
+// merge table title
+const handleTableTitle = (table) => {
+  const horizontal = ['', '" "'].concat([...yString])
+  const vertical = ['" "'].concat([...xString])
+  table.unshift(horizontal)
+  
+  for (let l = 1; l <= vertical.length; l++) {
+    table[l].unshift(vertical[l - 1])
+  }
+}
+
+// get table td content template
+const getTableTd = (item, idx) => {
+  let td = ''
+
+  for (let j = 0; j < item.length; j++) {
+    if (
+      (table2[idx][j] === table3[idx][j]) &&
+      (table2[idx][j] + table3[idx][j] !== '')
+    ) {
+      td += `<td class="path">${table1[idx][j]}</td>`
+    } else {
+      td += `<td>${table1[idx][j]}</td>`
+    }
+  }
+
+  return td
+}
+
+// get table template and print table in HTML
+const printTable = () => {
+  let tableContent = ''
+
+  for (let i = 0; i < table1.length; i++) {
+    tableContent += `
+      <tr>${getTableTd(table1[i], i)}</tr>
+    `
+  }
+
+  let table = `
+    <div class="dynamicTable">
+      <div class="des">
+        <div class="title">DynamicPrograming</div>
+        <div class="subTitle">- Longest Common Subsequence(LCS) -</div>
+        <p>1. 兩者相等則執行1 + ↖</p>
+        <p>2. 反之比較上方和左方兩者誰大，賦予方向 ↑、←</p>
+      </div>
+      <table>${tableContent}</table>
+    </div>
+  `
+
+  document.body.innerHTML = table
+}
+
+const getAllPath = () => {
+  for (let i = item.length - 1; i > 0; i--) {
+    if (
+      (table2[idx][j] === table3[idx][j]) &&
+      (table2[idx][j] + table3[idx][j] !== '')
+    ) {
+      td += `<td class="path">${table1[idx][j]}</td>`
+    } else if (table2[idx][j] === '↑') {
+      td += `<td class="path">${table1[idx][j]}</td>`
+    }
+  }
+}
+
+dynamicLCS(xString, yString)
+dynamicPrintLCS(xString.length, yString.length)
+getDynamicTable(table1, table2)
+printTable()
+
+console.log('table1', table2)
+console.log(`LCS is ${result}`)
+
+</script>
+
+<style>
+body {
+  background: #E5E5E5;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.dynamicTable {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+table {
+  text-align: center;
+  width: 860px;
+  font-size: 20px;
+  margin: 0 auto;
+}
+
+tr:nth-of-type(1), tr td:nth-of-type(1)  {
+  font-size: 28px;
+  color: #fff;
+  background: #000;
+}
+
+td {
+  border: 1px solid #000;
+  min-width: 80px;
+  padding: 8px 0;
+  position: relative;
+}
+
+td.path {
+  font-weight: bold;
+}
+
+td.path:after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background: #4DDC47;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: -1;
+}
+
+</style>
