@@ -14,8 +14,8 @@ let table1 = []
 let table2 = []
 let table3 = []
 let result = ""
-let xString = "ATVBBBBCCC"
-let yString = "TCBCCD"
+let xString = "ABBCCTVKLSDL"
+let yString = "TABBCBGGAKAS"
 
 // get DynamicPrograming Table
 const dynamicLCS = (str1, str2) => {
@@ -78,8 +78,10 @@ const dynamicPrintLCS = (i, j) => {
     table3[i][j] = "↖"
   } else if (table2[i][j] === "↑") {
     dynamicPrintLCS(i - 1, j)
+    table3[i][j] = "↑"
   } else {
     dynamicPrintLCS(i, j - 1)
+    table3[i][j] = "←"
   }
 }
 
@@ -118,7 +120,13 @@ const getTableTd = (item, idx) => {
       (table2[idx][j] === table3[idx][j]) &&
       (table2[idx][j] + table3[idx][j] !== '')
     ) {
-      td += `<td class="path">${table1[idx][j]}</td>`
+      if (table3[idx][j] === '↖') {
+        td += `<td class="target">${table1[idx][j]}</td>`
+      } else if (table3[idx][j] === '↑' || table3[idx][j] === '←') {
+        td += `<td class="path">${table1[idx][j]}</td>`
+      } else {
+        td += `<td>${table1[idx][j]}</td>`
+      }
     } else {
       td += `<td>${table1[idx][j]}</td>`
     }
@@ -141,9 +149,10 @@ const printTable = () => {
     <div class="dynamicTable">
       <div class="des">
         <div class="title">DynamicPrograming</div>
-        <div class="subTitle">- Longest Common Subsequence(LCS) -</div>
+        <div class="subTitle">- LCS(Longest Common Subsequence) -</div>
         <p>1. 兩者相等則執行1 + ↖</p>
         <p>2. 反之比較上方和左方兩者誰大，賦予方向 ↑、←</p>
+        <div class="result">LCS is: ${result}</div>
       </div>
       <table>${tableContent}</table>
     </div>
@@ -152,30 +161,24 @@ const printTable = () => {
   document.body.innerHTML = table
 }
 
-const getAllPath = () => {
-  for (let i = item.length - 1; i > 0; i--) {
-    if (
-      (table2[idx][j] === table3[idx][j]) &&
-      (table2[idx][j] + table3[idx][j] !== '')
-    ) {
-      td += `<td class="path">${table1[idx][j]}</td>`
-    } else if (table2[idx][j] === '↑') {
-      td += `<td class="path">${table1[idx][j]}</td>`
-    }
-  }
-}
-
 dynamicLCS(xString, yString)
 dynamicPrintLCS(xString.length, yString.length)
 getDynamicTable(table1, table2)
 printTable()
-
-console.log('table1', table2)
-console.log(`LCS is ${result}`)
+// console.log(`LCS is ${result}`)
 
 </script>
 
 <style>
+@keyframes targetShine {
+  0% {
+    background: transparent;
+  }
+  100% {
+    background: #AEC33A;
+  }
+}
+
 body {
   background: #E5E5E5;
   position: relative;
@@ -183,14 +186,20 @@ body {
   margin: 0;
 }
 
+.des {
+  position: relative;
+  color: #514644;
+  font-weight: bold;
+}
+
 .title {
-  font-size: 32px;
+  font-size: 1.7vw;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
 .subTitle {
-  font-size: 20px;
+  font-size: 0.9vw;
   font-weight: bold;
   margin-bottom: 40px;
 }
@@ -205,37 +214,44 @@ body {
 table {
   text-align: center;
   width: 860px;
-  font-size: 20px;
+  font-size: 1vw;
   margin: 0 auto;
 }
 
 tr:nth-of-type(1), tr td:nth-of-type(1)  {
-  font-size: 28px;
+  font-size: 1.2vw;
   color: #fff;
-  background: #000;
+  background: #253F58;
 }
 
 td {
   border: 1px solid #000;
-  min-width: 80px;
-  padding: 8px 0;
+  min-width: 4vw;
+  padding: 0.3vw 0;
   position: relative;
+  overflow: hidden;
 }
 
-td.path {
+td.path, td.target {
   font-weight: bold;
 }
 
-td.path:after {
-  content: '';
-  width: 100%;
-  height: 100%;
-  background: #4DDC47;
+td.path {
+  color: #fff;
+  background: #D92139;
+}
+
+td.target {
+  background: #AEC33A;
+  animation: targetShine 0.5s both infinite alternate linear;
+}
+
+.result {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
-  z-index: -1;
+  right: 0;
+  bottom: 0;
+  font-size: 1.2vw;
+  font-weight: bold;
 }
 
 </style>
