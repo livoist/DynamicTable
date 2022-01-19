@@ -4,6 +4,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DynamicTable</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body></body>
 </html>
@@ -19,6 +20,8 @@ let yString = "TABBCBGGAKAS"
 
 // get DynamicPrograming Table
 const dynamicLCS = (str1, str2) => {
+  console.log('s1l', str1)
+  console.log('s2l', str2)
   let m = str1.length
   let n = str2.length
 
@@ -148,11 +151,18 @@ const printTable = () => {
   let table = `
     <div class="dynamicTable">
       <div class="des">
+        <input type="text" id="str1">
+        <input type="text" id="str2">
+        <div class="sendBtn">BTN</div>
         <div class="title">DynamicPrograming</div>
         <div class="subTitle">- LCS(Longest Common Subsequence) -</div>
         <p>1. 兩者相等則執行1 + ↖</p>
         <p>2. 反之比較上方和左方兩者誰大，賦予方向 ↑、←</p>
-        <div class="result">LCS is: ${result}</div>
+        <div class="result">
+          <div class="str">X-String: ${xString}</div>
+          <div class="str">Y-String: ${yString}</div>
+          <p>LCS is: ${result}</p>
+        </div>
       </div>
       <table>${tableContent}</table>
     </div>
@@ -165,93 +175,29 @@ dynamicLCS(xString, yString)
 dynamicPrintLCS(xString.length, yString.length)
 getDynamicTable(table1, table2)
 printTable()
-// console.log(`LCS is ${result}`)
 
+
+window.onload = function() {
+  const btn = document.querySelector('.sendBtn')
+
+  const getVal = () => {
+    console.log('done')
+    table1 = []
+    table2 = []
+    table3 = []
+    result = ''
+
+    const s1 = document.getElementById('str1').value
+    const s2 = document.getElementById('str2').value
+    xString = s1
+    yString = s2
+
+    dynamicLCS(xString, yString)
+    dynamicPrintLCS(xString.length, yString.length)
+    getDynamicTable(table1, table2)
+    printTable()
+  }
+
+  btn.addEventListener('click', getVal)
+}
 </script>
-
-<style>
-@keyframes targetShine {
-  0% {
-    background: transparent;
-  }
-  100% {
-    background: #AEC33A;
-  }
-}
-
-body {
-  background: #E5E5E5;
-  position: relative;
-  padding: 0;
-  margin: 0;
-}
-
-.des {
-  position: relative;
-  color: #514644;
-  font-weight: bold;
-}
-
-.title {
-  font-size: 1.7vw;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.subTitle {
-  font-size: 0.9vw;
-  font-weight: bold;
-  margin-bottom: 40px;
-}
-
-.dynamicTable {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-
-table {
-  text-align: center;
-  width: 860px;
-  font-size: 1vw;
-  margin: 0 auto;
-}
-
-tr:nth-of-type(1), tr td:nth-of-type(1)  {
-  font-size: 1.2vw;
-  color: #fff;
-  background: #253F58;
-}
-
-td {
-  border: 1px solid #000;
-  min-width: 4vw;
-  padding: 0.3vw 0;
-  position: relative;
-  overflow: hidden;
-}
-
-td.path, td.target {
-  font-weight: bold;
-}
-
-td.path {
-  color: #fff;
-  background: #D92139;
-}
-
-td.target {
-  background: #AEC33A;
-  animation: targetShine 0.5s both infinite alternate linear;
-}
-
-.result {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  font-size: 1.2vw;
-  font-weight: bold;
-}
-
-</style>

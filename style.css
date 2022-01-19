@@ -1,0 +1,98 @@
+@keyframes targetShine {
+  0% {
+    background: transparent;
+  }
+  100% {
+    background: #AEC33A;
+  }
+}
+
+body {
+  background: #E5E5E5;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.des {
+  position: relative;
+  color: #514644;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 1.7vw;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subTitle {
+  font-size: 0.9vw;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.dynamicTable {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+table {
+  text-align: center;
+  width: 860px;
+  font-size: 1vw;
+  margin: 0 auto;
+}
+
+tr:nth-of-type(1), tr td:nth-of-type(1)  {
+  font-size: 1.2vw;
+  color: #fff;
+  background: #253F58;
+}
+
+td {
+  border: 1px solid #000;
+  min-width: 4vw;
+  padding: 0.3vw 0;
+  position: relative;
+  overflow: hidden;
+}
+
+td.path, td.target {
+  font-weight: bold;
+}
+
+td.path {
+  color: #fff;
+  background: #D92139;
+}
+
+td.target {
+  background: #AEC33A;
+  animation: targetShine 0.5s both infinite alternate linear;
+}
+
+.result {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 1.2vw;
+  font-weight: bold;
+}
+
+.result .str {
+  font-size: 1vw;
+}
+
+.result p {
+  margin-bottom: 0;
+}
+
+.sendBtn {
+  background: #fff;
+  display: inline-block;
+  color: #000;
+  cursor: pointer;
+}
