@@ -20,8 +20,6 @@ let yString = "TABBCBGGAKAS"
 
 // get DynamicPrograming Table
 const dynamicLCS = (str1, str2) => {
-  console.log('s1l', str1)
-  console.log('s2l', str2)
   let m = str1.length
   let n = str2.length
 
@@ -151,13 +149,24 @@ const printTable = () => {
   let table = `
     <div class="dynamicTable">
       <div class="des">
-        <input type="text" id="str1">
-        <input type="text" id="str2">
-        <div class="sendBtn">BTN</div>
         <div class="title">DynamicPrograming</div>
         <div class="subTitle">- LCS(Longest Common Subsequence) -</div>
+        <div class="inputInfo">
+          <div class="inputBlocks">
+            <div class="inputBlock">
+              <p>X-String:</p>
+              <input type="text" id="str1" placeholder="x-str">
+            </div>
+            <div class="inputBlock">
+              <p>Y-String:</p>
+              <input type="text" id="str2" placeholder="y-str">
+            </div>
+          </div>
+          <div class="sendBtn">Send</div>
+        </div>
         <p>1. 兩者相等則執行1 + ↖</p>
         <p>2. 反之比較上方和左方兩者誰大，賦予方向 ↑、←</p>
+        <p>3. 而如果上方左方一樣大，則從哪邊沒有差別</p>
         <div class="result">
           <div class="str">X-String: ${xString}</div>
           <div class="str">Y-String: ${yString}</div>
@@ -171,33 +180,42 @@ const printTable = () => {
   document.body.innerHTML = table
 }
 
-dynamicLCS(xString, yString)
-dynamicPrintLCS(xString.length, yString.length)
-getDynamicTable(table1, table2)
-printTable()
+const initTable = () => {
+  dynamicLCS(xString, yString)
+  dynamicPrintLCS(xString.length, yString.length)
+  getDynamicTable(table1, table2)
+  printTable()
+}
 
+// reassign table
+const reassignTable = () => {
+  table1 = []
+  table2 = []
+  table3 = []
+  result = ''
+
+  const s1 = document.getElementById('str1').value
+  const s2 = document.getElementById('str2').value
+  xString = s1
+  yString = s2
+
+  initTable()
+
+  // ****innerHTML 會重新創建節點，所以要在每一次都重新addEventListener****
+  const btn = document.querySelector('.sendBtn')
+  btn.addEventListener('click', reassignTable)
+}
 
 window.onload = function() {
+  initTable()
+
   const btn = document.querySelector('.sendBtn')
-
-  const getVal = () => {
-    console.log('done')
-    table1 = []
-    table2 = []
-    table3 = []
-    result = ''
-
-    const s1 = document.getElementById('str1').value
-    const s2 = document.getElementById('str2').value
-    xString = s1
-    yString = s2
-
-    dynamicLCS(xString, yString)
-    dynamicPrintLCS(xString.length, yString.length)
-    getDynamicTable(table1, table2)
-    printTable()
-  }
-
-  btn.addEventListener('click', getVal)
+  btn.addEventListener('click', reassignTable)
 }
+
+window.addEventListener('onunload', () => {
+  const btn = document.querySelector('.sendBtn')
+  btn.removeEventListener('click', reassignTable)
+})
+
 </script>

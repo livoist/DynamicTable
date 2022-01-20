@@ -7,6 +7,21 @@
   }
 }
 
+input {
+  all: unset;
+}
+
+input::placeholder {
+  color: #fff;
+}
+
+input {
+  background: #514644;
+  text-align: center;
+  color: #fff;
+  padding: 4px 0;
+}
+
 body {
   background: #E5E5E5;
   position: relative;
@@ -91,8 +106,31 @@ td.target {
 }
 
 .sendBtn {
-  background: #fff;
+  background: #000;
   display: inline-block;
-  color: #000;
+  color: #fff;
   cursor: pointer;
+  transition: 0.5s;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-size: 0.7vw;
+}
+
+.sendBtn:hover {
+  background: #514644;
+}
+
+.inputInfo, .inputBlocks {
+  display: flex;
+}
+
+.inputBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.inputBlock p {
+  margin: 0 6px 0 0;
 }
