@@ -15,8 +15,8 @@ let table1 = []
 let table2 = []
 let table3 = []
 let result = ""
-let xString = "ABBCCTVKLSDL"
-let yString = "TABBCBGGAKAS"
+let xString = "ABBCTLSDL"
+let yString = "TABBGAKAS"
 
 // get DynamicPrograming Table
 const dynamicLCS = (str1, str2) => {
@@ -152,25 +152,27 @@ const printTable = () => {
         <div class="title">DynamicPrograming</div>
         <div class="subTitle">- LCS(Longest Common Subsequence) -</div>
         <div class="inputInfo">
-          <div class="inputBlocks">
-            <div class="inputBlock">
-              <p>X-String:</p>
-              <input type="text" id="str1" placeholder="x-str">
+          <div class="flex">
+            <div class="inputBlocks">
+              <div class="inputBlock">
+                <p>X: </p>
+                <input type="text" class="xString" placeholder="Enter X String">
+              </div>
+              <div class="inputBlock">
+                <p>Y: </p>
+                <input type="text" class="yString" placeholder="Enter Y String">
+              </div>
             </div>
-            <div class="inputBlock">
-              <p>Y-String:</p>
-              <input type="text" id="str2" placeholder="y-str">
-            </div>
+            <div class="sendBtn">Send</div>
           </div>
-          <div class="sendBtn">Send</div>
+          <p class="resultTxt">LCS is: ${result}</p>
         </div>
         <p>1. 兩者相等則執行1 + ↖</p>
         <p>2. 反之比較上方和左方兩者誰大，賦予方向 ↑、←</p>
         <p>3. 而如果上方左方一樣大，則從哪邊沒有差別</p>
         <div class="result">
-          <div class="str">X-String: ${xString}</div>
-          <div class="str">Y-String: ${yString}</div>
-          <p>LCS is: ${result}</p>
+          <div class="str">X String: ${xString}</div>
+          <div class="str">Y String: ${yString}</div>
         </div>
       </div>
       <table>${tableContent}</table>
@@ -194,10 +196,10 @@ const reassignTable = () => {
   table3 = []
   result = ''
 
-  const s1 = document.getElementById('str1').value
-  const s2 = document.getElementById('str2').value
-  xString = s1
-  yString = s2
+  const xStr = document.getElementsByClassName('xString')[0]
+  const yStr = document.getElementsByClassName('yString')[0]
+  xString = xStr.value
+  yString = yStr.value
 
   initTable()
 
